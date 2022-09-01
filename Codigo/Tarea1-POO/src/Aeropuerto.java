@@ -32,6 +32,47 @@ public class Aeropuerto {
         return result;
     }
 
+    public int buscaIdentificacionPasajero(String identificacionPasajero){
+        int  result = -1;
+        int i = 0;
+
+        while(i< espacios.length){
+
+            if(espacios[i] == null){
+                i += 1;
+
+                continue;
+
+            } else  {
+                for (int j = 0; j < espacios[i].matrizEjecutivo.length; j++) {
+                    for (int k = 0; k < espacios[i].matrizEjecutivo[0].length; k++) {
+                        if(espacios[i].matrizEjecutivo[j][k].getPasajero() != null){
+
+                            if(espacios[i].matrizEjecutivo[j][k].getPasajero().getIdentificacion().equals(identificacionPasajero)){
+                                return i;
+                            }
+                        }
+
+                    }
+                }
+                for (int j = 0; j < espacios[i].matrizEconomico.length; j++) {
+                    for (int k = 0; k < espacios[i].matrizEconomico[0].length; k++) {
+                        if(espacios[i].matrizEconomico[j][k].getPasajero() != null){
+                            if(espacios[i].matrizEconomico[j][k].getPasajero().getIdentificacion().equals(identificacionPasajero)){
+                                return i;
+                            }
+                        }
+
+                    }
+                }
+
+                }
+
+            i += 1;
+        }
+        return result;
+
+    }
     public int obtenerIndiceVacio(){
         for (int i = 0; i < espacios.length; i++) {
             if (espacios[i] == null)

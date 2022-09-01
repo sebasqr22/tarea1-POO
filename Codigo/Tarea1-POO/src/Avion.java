@@ -28,7 +28,7 @@ public class Avion {
                         contador += 1;
                     }
                     String indentificacion = 1 +"-"+ letra;
-                    matrizEconomico[i][j] = new Asiento(indentificacion,"J");
+                    matrizEjecutivo[i][j] = new Asiento(indentificacion,"J");
                 }
             }
         }
@@ -48,32 +48,53 @@ public class Avion {
         String result = String.valueOf(ASCII);
         return result;
     }
-    public boolean modificaCapacidadAsiento(String seccion,String identificacion){
+    public int[] validaExsteAsiento(String seccion,String identificacion){
         int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
         int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
 
-        if(seccion.toUpperCase() == "J"){
+        if(seccion.toUpperCase().equals("J")){
 
             if( fila< matrizEjecutivo.length && columna < matrizEjecutivo[0].length){
-                System.out.println("El asiento ["+fila+"]["+columna +"] cambio su estado");
-                matrizEjecutivo[fila][columna].setEstado();
-                return true;
+                return new int[]{fila, columna};
             }
             else{
                 System.out.println("El asiento no existe");
-                return false;
+                return new int[]{-1, -1};
             }
         }
         else{
             if(fila < matrizEconomico.length && columna < matrizEconomico[0].length){
-                System.out.println("El asiento ["+fila+"]["+columna +"] cambio su estado");
-                matrizEconomico[fila][columna].setEstado();
-                return true;
+                return new int[]{fila, columna};
             }else{
                 System.out.println("El asiento no existe");
-                return false;
+                return new int[]{-1, -1};
             }
 
         }
+
+    }
+    public boolean modificaCapacidadAsiento(String seccion,String identificacion){
+        int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
+        int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+        int coordenadas[] = validaExsteAsiento(seccion,identificacion);
+
+        if(coordenadas[0] != -1){
+            if(seccion.toUpperCase().equals("J")){
+                    System.out.println("El asiento J["+fila+"]["+columna +"] cambio su estado");
+                    matrizEjecutivo[coordenadas[0]][coordenadas[1]].setEstado();
+                    return true;
+                }
+            else{
+                    System.out.println("El asiento E["+fila+"]["+columna +"] cambio su estado");
+                    matrizEconomico[fila][columna].setEstado();
+                    return true;
+
+
+            }
+
+        }else{
+            return false;
+        }
+
     }
 }

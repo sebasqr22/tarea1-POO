@@ -111,7 +111,8 @@ public class FuncionesMenu {
 
 
     }
-    public void modificarCapacidadDeAsientos() throws IOException {
+
+    public void asignarPasajerosAAsientos() throws IOException {
         System.out.println("Ingrese la identificacion del avion que desea");
         String identificacionAvion = br.readLine();
         if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1){
@@ -124,14 +125,42 @@ public class FuncionesMenu {
 
                     String identificacion = br.readLine();
                     if(verificaFormatidentificacionAsiento(identificacion)){
-                        if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].modificaCapacidadAsiento(Seccion,identificacion)){
-                            break;
+                        if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].validaExsteAsiento(Seccion,identificacion)[0] != -1){
+                            System.out.println("Ingrese su Nombre");
+                            String nombre = br.readLine();
+                            System.out.println("Ingrese su pais de origen");
+                            String pais = br.readLine();
+                            String identificacionPasajero2= nombre+pais;
+                            if(aeropuerto.buscaIdentificacionPasajero(identificacionPasajero2) == -1){
+                                System.out.println("El pasajero puede ingresar");
+                                int posAvion = aeropuerto.buscaIdentificacionAvion(identificacionAvion);
+                                int columna = aeropuerto.getEspacios()[posAvion].letraNumero( String.valueOf(identificacion.charAt(2)));
+                                int fila =  Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+
+                                if(Seccion.toUpperCase().equals("J")){
+                                    aeropuerto.getEspacios()[posAvion].matrizEjecutivo[fila][columna].setPasajero(new Pasajero(identificacionPasajero2,nombre,pais));
+                                }
+                                else{
+                                    aeropuerto.getEspacios()[posAvion].matrizEconomico[fila][columna].setPasajero(new Pasajero(identificacionPasajero2,nombre,pais));
+
+                                }
+
+                                break;
+                            }
+                            else{
+
+                                System.out.println("El pasajero ya se encuentra registrado");
+                            }
+
+
+                        }
+                        else{
+                            System.out.println("El asiento no existe");
                         }
                     }
                     else{
                         System.out.println("Formato de identificacion de asisento no permitido");
                     }
-
 
                 }
                 else{
@@ -139,6 +168,8 @@ public class FuncionesMenu {
                 }
             }
             inicio();
+
+
         }
         else{
             System.out.println("No existe ese avion");
@@ -181,10 +212,55 @@ public class FuncionesMenu {
 
 
     }
-    public void excluirAvion(){
+    public void excluirAvion() throws IOException {
 
     }
-    public void asignarPasajerosAAsientos(){
+    public void modificarCapacidadDeAsientos() throws IOException {
+        System.out.println("Escriba la identificacion del avion en el que desea buscar");
+        String identificacionAvion = br.readLine();
+        if(identificacionAvion.length() == 5){
+            if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1){
+                System.out.println("Encontramos el avion");
+                while(true){
+                    System.out.println("Ingrese la seccion en la que deseas buscar(E = econonomica J = ejecutiva)");
+                    String Seccion = br.readLine();
+                    if(Seccion.toUpperCase().equals("E") || Seccion.toUpperCase().equals("J")){
+                        System.out.println("Ingrese la identificacion del asiento(columna-fila)(1-A)");
+
+                        String identificacion = br.readLine();
+                        if(verificaFormatidentificacionAsiento(identificacion)){
+                            if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].modificaCapacidadAsiento(Seccion,identificacion)){
+
+                                break;
+                            }
+                            else{
+                                System.out.println("El asiento no existe");
+                            }
+                        }
+                        else{
+                            System.out.println("Formato de identificacion de asisento no permitido");
+                        }
+
+
+                    }
+                    else{
+                        System.out.println("El dato ingresado no es permitido");
+                    }
+                }
+                inicio();
+
+            }else{
+                System.out.println("No existe avion con esa identificacion");
+                asignarPasajerosAAsientos();
+
+
+            }
+
+        }
+        else{
+            System.out.println("La identificacion tiene que tener 5 caracteres");
+            asignarPasajerosAAsientos();
+        }
 
     }
     public void vaciarAsiento(){

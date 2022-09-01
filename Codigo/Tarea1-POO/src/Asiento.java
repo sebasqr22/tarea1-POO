@@ -35,4 +35,5 @@ public class Asiento {
     public void setIdentificacion(String identificacion) {
         this.identificacion = identificacion;
     }
+
 }
