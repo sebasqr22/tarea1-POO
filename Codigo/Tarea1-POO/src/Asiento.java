@@ -27,4 +27,12 @@ public class Asiento {
     public void setPasajero(Pasajero pasajero) {
         this.pasajero = pasajero;
     }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
 }
