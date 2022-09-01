@@ -97,4 +97,27 @@ public class Avion {
         }
 
     }
+
+    public void vaciarAsiento(String seccion, String identificacion){
+        int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
+        int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+        Asiento asiento;
+
+        if(seccion.toUpperCase().equals("J")){
+            asiento = matrizEjecutivo[fila][columna];
+        }
+        else{
+            asiento = matrizEconomico[fila][columna];
+        }
+
+        asiento.vaciar();
+    }
+
+    public Asiento[][] get_economico(){
+        return matrizEconomico;
+    }
+
+    public Asiento[][] get_ejecutivo(){
+        return matrizEjecutivo;
+    }
 }

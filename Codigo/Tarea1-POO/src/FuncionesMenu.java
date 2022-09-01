@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
+import java.util.Objects;
 
 public class FuncionesMenu {
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); //Ya tenemos el "lector"
@@ -14,7 +16,7 @@ public class FuncionesMenu {
         System.out.println("Bienvenido al aeropuerto");
         System.out.println("1-Agregar avion \n2-Modificar capacidad de asientos\n3-Excluir avion\n4-Asignar pasajeros a asientos\n5-Vaciar asiento\n" +
                 "6-Vaciar avion\n7-Consultar avion\n8-Buscar pasajero\n9-Consultar asientos disponibles");
-        System.out.println("Escriba el numero de la opcion que desea");
+        System.out.println("Escriba el numero de la opcion que desea:");
         String opcion = br.readLine();
         switch (opcion.toUpperCase()) {
             case "1":
@@ -50,14 +52,14 @@ public class FuncionesMenu {
     }
 
     public void agregarAvion() throws IOException {
-        System.out.println("Ingresa la indentificacion que desea ponerle al avion(5 caracteres)");
+        System.out.println("Ingresa la indentificacion que desea ponerle al avion(5 caracteres):");
         String opcion = br.readLine();
         if(opcion.length() == 5){
             if(aeropuerto.buscaIdentificacionAvion(opcion) != -1){
-                System.out.println("la identificacion se encuentra en uso");
+                System.out.println("la identificacion se encuentra en uso!!");
                 agregarAvion();
             }else{
-                System.out.println("identificacion permitida");
+                System.out.println("identificacion permitida!!");
                 while(true){
 
                     System.out.println("Ingrese la cantidad de filas ejecutivas");
@@ -263,16 +265,147 @@ public class FuncionesMenu {
         }
 
     }
-    public void vaciarAsiento(){
+    public void vaciarAsiento() throws IOException{
+        System.out.println("Escriba la identificacion del avion:");
+        String identificacionAvion = br.readLine();
+        if(identificacionAvion.length() == 5){
+            if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1) {
+                while(true){
+                    System.out.println("Elija la opción (E = econonomica  J = ejecutiva  S = Salir):");
+                    String opcion = br.readLine();
+                    opcion = opcion.toUpperCase();
+
+                    if(opcion.toUpperCase().equals("E") || opcion.toUpperCase().equals("J")) {
+                        System.out.println("Ingrese la identificacion del asiento(columna-fila)(1-A)");
+                        String identificacion = br.readLine();
+                        if(verificaFormatidentificacionAsiento(identificacion)) {
+                            Avion avion = aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)];
+                            //se procede a vaciar
+                            if (avion.validaExsteAsiento(opcion, identificacion)[0] != -1) {//exite el asiento
+                                avion.vaciarAsiento(opcion, identificacion);
+                                System.out.println("Asiento " + identificacion + " vaciado correctamente!!!");
+                                break;
+
+                            }else{
+                                System.out.println("No se pudo encontrar el asiento!!");
+                            }
+                        }
+
+                    }
+                    else{
+                        break;
+                    }
+                }
+                inicio();
+
+            }else{
+                System.out.println("Este avión no se encuentra registrado!!");
+                inicio();
+
+            }
+
+        }else{
+            System.out.println("Formato de identificación inválido!!");
+            vaciarAsiento();
+        }
 
     }
-    public void vaciarAvion(){
 
+    private void vaciarMatriz(Asiento[][] lista){
+        for(Asiento[] asientos : lista){
+            for(Asiento asiento : asientos){
+                asiento.vaciar();
+            }
+        }
+    }
+
+    public void vaciarAvion() throws IOException{
+        System.out.println("Escriba la identificacion del avion:");
+        String identificacionAvion = br.readLine();
+        if(identificacionAvion.length() == 5){
+            if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1) {
+                Avion avion = aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)];
+                Asiento[][] ejecutivo = avion.get_ejecutivo();
+                Asiento[][] economico = avion.get_economico();
+                vaciarMatriz(ejecutivo);
+                vaciarMatriz(economico);
+
+                System.out.println("Avion vaciado correctamente!!");
+                inicio();
+
+
+            }else{
+                System.out.println("Este avión no se encuentra registrado!!");
+                inicio();
+
+            }
+
+        }else{
+            System.out.println("Formato de identificación inválido!!");
+            vaciarAsiento();
+        }
     }
     public void consultarAvion(){
 
     }
-    public void buscarPasajero(){
+
+    public void buscarPasajero() throws IOException{
+        System.out.println("Escriba la identificacion del pasajero:");
+        String id_pasajero = br.readLine();
+        Avion[] aviones = aeropuerto.getEspacios();
+        Pasajero pasajero;
+        Asiento[][] economicos, ejecutivos;
+        Boolean encontrado = false;
+        String asiento = "", id_avion = "";
+
+        if(aeropuerto.buscaIdentificacionPasajero(id_pasajero) != -1) {
+
+            for(Avion avion : aviones){
+                if (!encontrado) {
+                    economicos = avion.get_economico();
+                    ejecutivos = avion.get_ejecutivo();
+
+                    for(Asiento[] filas : economicos){
+                        for(Asiento asiento1 : filas){
+                            if(Objects.equals(asiento1.getPasajero().getIdentificacion(), id_pasajero)){
+                                asiento = asiento1.getIdentificacion();
+                                id_avion = avion.identificacion;
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!encontrado){
+                        for(Asiento[] filas1 : ejecutivos){
+                            for(Asiento asiento2 : filas1){
+                                if(Objects.equals(asiento2.getPasajero().getIdentificacion(), id_pasajero)){
+                                    asiento = asiento2.getIdentificacion();
+                                    id_avion = avion.identificacion;
+                                    encontrado = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    break;
+                }
+
+            }
+            if(encontrado){
+                System.out.println("El pasajero " + id_pasajero + " se encuentra en:\n --> Avion: " + id_avion + "\n --> Asiento: " + asiento + "\n");
+                inicio();
+            }
+            else{
+                System.out.println("El pasajero " + id_pasajero + " no fue encontrado!!\n");
+                inicio();
+            }
+
+        }else{
+            System.out.println("El pasajero " + id_pasajero + " no fue encontrado!!\n");
+            inicio();
+        }
 
     }
     public void consultarAsientosDisponibles(){

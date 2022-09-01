@@ -36,4 +36,8 @@ public class Asiento {
         this.identificacion = identificacion;
     }
 
+    public void vaciar(){
+        pasajero = null;
+    }
+
 }
