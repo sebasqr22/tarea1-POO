@@ -345,8 +345,44 @@ public class FuncionesMenu {
             vaciarAsiento();
         }
     }
-    public void consultarAvion(){
+    private void imprimirAsientos(Asiento[][] asientos){
+        String info = null;
+        for(Asiento[] fila: asientos){
+            for(Asiento i: fila){
+                String nombre = i.getPasajero().getNombre().substring(0, 20);
+                info = i.getIdentificacion() + " " + nombre + "\t";
+            }
+            System.out.println(info + "\n");
 
+        }
+    }
+    public void consultarAvion() throws IOException{
+        System.out.println("Escriba la identificacion del avion:");
+        String identificacionAvion = br.readLine();
+        if(identificacionAvion.length() == 5){
+            if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1) {
+                Avion avion = aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)];
+                Asiento[][] ejecutivo = avion.get_ejecutivo();
+                Asiento[][] economico = avion.get_economico();
+
+                System.out.println("CLASE EJECUTIVA");
+                imprimirAsientos(ejecutivo);
+
+                System.out.println("CLASE ECONOMICA");
+                imprimirAsientos(economico);
+
+                inicio();
+
+
+            }else{
+                System.out.println("Este avión no se encuentra registrado!!");
+                inicio();
+            }
+        }
+        else{
+            System.out.println("Formato de identificación inválido!!");
+            consultarAvion();
+        }
     }
 
     public void buscarPasajero() throws IOException{
