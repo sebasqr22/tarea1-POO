@@ -215,7 +215,59 @@ public class FuncionesMenu {
 
     }
     public void excluirAvion() throws IOException {
+        System.out.println("Ingrese la identificacion del avion que desea");
+        String identificacionAvion = br.readLine();
+        if(aeropuerto.buscaIdentificacionAvion(identificacionAvion) != -1){
+            System.out.println("Encontramos el avion");
+            int indiceAvion = aeropuerto.buscaIdentificacionAvion(identificacionAvion);
+            boolean hayPersonas = false;
+            while(true){
+                Avion avionBorrar = aeropuerto.getEspacios()[indiceAvion];
+                for (int i = 0; i < avionBorrar.get_economico().length; i++) {
+                    for (int j = 0; j < avionBorrar.get_economico()[0].length; j++) {
+                        if(avionBorrar.get_economico()[i][j].getPasajero() != null){
+                            //System.out.println("sasasasssssss");
+                            hayPersonas = true;
+                            break;
+                        }
+                    }
+                    if(hayPersonas){
+                        break;
+                    }
+                }
+                if(hayPersonas){
+                    break;
+                }
+                if(avionBorrar.get_ejecutivo() != null){
+                    for (int i = 0; i < avionBorrar.get_ejecutivo().length; i++) {
 
+                        for (int j = 0; j < avionBorrar.get_ejecutivo()[0].length; j++) {
+                            if(avionBorrar.get_economico()[i][j].getPasajero() != null){
+                                hayPersonas = true;
+                                break;
+                            }
+                        }
+                        if(hayPersonas){
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            if(hayPersonas){
+                System.out.println("No se puede excluir el avion porque hay gente dentro");
+            }
+            else{
+                aeropuerto.getEspacios()[indiceAvion] = null;
+                System.out.println("El avion se exluyo correctamente");
+
+            }
+            inicio();
+        }
+        else{
+            System.out.println("No existe ese avion");
+            modificarCapacidadDeAsientos();
+        }
     }
     public void modificarCapacidadDeAsientos() throws IOException {
         System.out.println("Escriba la identificacion del avion en el que desea buscar");

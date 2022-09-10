@@ -44,17 +44,21 @@ public class Aeropuerto {
                 continue;
 
             } else  {
-                for (int j = 0; j < espacios[i].matrizEjecutivo.length; j++) {
-                    for (int k = 0; k < espacios[i].matrizEjecutivo[0].length; k++) {
-                        if(espacios[i].matrizEjecutivo[j][k].getPasajero() != null){
+                if(espacios[i].matrizEjecutivo != null){
+                    for (int j = 0; j < espacios[i].matrizEjecutivo.length; j++) {
+                        for (int k = 0; k < espacios[i].matrizEjecutivo[0].length; k++) {
+                            if(espacios[i].matrizEjecutivo[j][k].getPasajero() != null){
 
-                            if(espacios[i].matrizEjecutivo[j][k].getPasajero().getIdentificacion().equals(identificacionPasajero)){
-                                return i;
+                                if(espacios[i].matrizEjecutivo[j][k].getPasajero().getIdentificacion().equals(identificacionPasajero)){
+                                    return i;
+                                }
                             }
-                        }
 
+                        }
                     }
+
                 }
+
                 for (int j = 0; j < espacios[i].matrizEconomico.length; j++) {
                     for (int k = 0; k < espacios[i].matrizEconomico[0].length; k++) {
                         if(espacios[i].matrizEconomico[j][k].getPasajero() != null){
