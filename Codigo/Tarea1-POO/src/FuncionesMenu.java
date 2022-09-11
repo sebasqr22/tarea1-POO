@@ -425,30 +425,35 @@ public class FuncionesMenu {
         return aux;
     }
     private void imprimirAsientos(Asiento[][] asientos){
-        StringBuilder info = new StringBuilder();
-        for(Asiento[] fila: asientos){
-            for(Asiento i: fila){
-                Pasajero pasajero = i.getPasajero();
-                if(pasajero != null){
-                    if(i.getEstado() == "A"){
-                        String nombre;
-                        try{
-                            nombre = pasajero.getNombre().substring(0, 20);
-                        }
-                        catch (StringIndexOutOfBoundsException e){
-                            nombre = String.valueOf(agregar_faltantes(pasajero.getNombre()));
+        if(asientos != null){
+            StringBuilder info = new StringBuilder();
+            for(Asiento[] fila: asientos){
+                for(Asiento i: fila){
+                    Pasajero pasajero = i.getPasajero();
+                    if(pasajero != null){
+                        if(i.getEstado() == "A"){
+                            String nombre;
+                            try{
+                                nombre = pasajero.getNombre().substring(0, 20);
+                            }
+                            catch (StringIndexOutOfBoundsException e){
+                                nombre = String.valueOf(agregar_faltantes(pasajero.getNombre()));
+                            }
+
+                            info.append(i.getIdentificacion()).append(" ").append(nombre).append("\t");
+                        }else{
+                            info.append(i.getIdentificacion()).append(" ").append("INACTIVO").append("\t");
                         }
 
-                        info.append(i.getIdentificacion()).append(" ").append(nombre).append("\t");
-                    }else{
-                        info.append(i.getIdentificacion()).append(" ").append("INACTIVO").append("\t");
                     }
-
                 }
+                info.append("\n");
             }
-            info.append("\n");
+            System.out.println(info);
+        }else{
+            System.out.println("NO SE ENCUENTRAN ASIENTOS");
         }
-        System.out.println(info);
+
     }
     public void consultarAvion() throws IOException{
         System.out.println("Escriba la identificacion del avion:");
@@ -538,7 +543,40 @@ public class FuncionesMenu {
         }
 
     }
-    public void consultarAsientosDisponibles(){
+    private int contarDisponibles(Asiento[][] asientos){
+        int contador = 0;
 
+        for(Asiento[] fila : asientos){
+            for(Asiento asiento : fila){
+                if(asiento.getEstado() == "A" || asiento.getPasajero() == null){
+                    contador++;
+                }
+            }
+        }
+        return contador;
+    }
+    public void consultarAsientosDisponibles() throws IOException {
+        Avion[] aviones = aeropuerto.getEspacios();
+        for(Avion avion : aviones){
+            try{
+                Asiento[][] ejecutivo = avion.get_ejecutivo();
+                Asiento[][] economico = avion.get_economico();
+
+                System.out.println("\n -->" + avion.identificacion);
+
+                if(ejecutivo != null){
+                    System.out.println("Cantidad de Asientos Disponibles en EJECUTIVA: " + contarDisponibles(ejecutivo));
+                }
+                if(economico != null){
+                    System.out.println("Cantidad de Asientos Disponibles en ECONOMICO: " + contarDisponibles(economico));
+                }
+                System.out.println("\n");
+            }
+            catch (NullPointerException e){
+
+            }
+
+        }
+        inicio();
     }
 }
