@@ -17,17 +17,22 @@ public class Avion {
             tieneEjecutiva = true;
             matrizEjecutivo = new Asiento[filasEjecutivas][asientosPorFilaEjecutiva];
             for (int i = 0; i < filasEjecutivas; i++) {
-                int contador = 0;
+                int contador = matrizEconomico[0].length -matrizEjecutivo[0].length;
                 for (int j = 0; j < asientosPorFilaEjecutiva; j++) {
                     String letra;
-                    if(j <= asientosPorFilaEconomica/2){
+
+                    if(j < asientosPorFilaEjecutiva/2){
                         letra = numeroLetra(j);
+
                     }
                     else{
                         letra = numeroLetra(asientosPorFilaEconomica-contador);
-                        contador += 1;
+
+                        contador -= 1;
                     }
+
                     String indentificacion = i +"-"+ letra;
+                    System.out.println(indentificacion);
                     matrizEjecutivo[i][j] = new Asiento(indentificacion,"J");
                 }
             }
@@ -52,6 +57,12 @@ public class Avion {
     public int[] validaExsteAsiento(String seccion,String identificacion){
         int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
         int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+        if(columna >=  matrizEjecutivo.length/2 && columna >= matrizEconomico[0].length -(matrizEconomico[0].length -matrizEjecutivo[0].length)){
+            columna -= (matrizEconomico[0].length -matrizEjecutivo[0].length);
+        }
+        else{
+            return new int[]{-1, -1};
+        }
 
         if(seccion.toUpperCase().equals("J")){
 
