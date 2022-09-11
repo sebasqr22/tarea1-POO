@@ -14,10 +14,20 @@ public class Asiento {
     }
 
     public void setEstado() {
-        if(this.estado == "A")
-            this.estado = "I";
-        else
-            this.estado = "A";
+        if(pasajero != null){
+            System.out.println("No se pudo cambiar el estado porque esta ocupado");
+
+        }
+        else{
+
+            System.out.println("El asiento cambio su estado");
+            if(this.estado == "A")
+                this.estado = "I";
+            else
+                this.estado = "A";
+
+        }
+
     }
 
     public Pasajero getPasajero() {
