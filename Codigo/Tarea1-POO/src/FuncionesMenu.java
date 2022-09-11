@@ -15,7 +15,7 @@ public class FuncionesMenu {
 
         System.out.println("Bienvenido al aeropuerto");
         System.out.println("1-Agregar avion \n2-Modificar capacidad de asientos\n3-Excluir avion\n4-Asignar pasajeros a asientos\n5-Vaciar asiento\n" +
-                "6-Vaciar avion\n7-Consultar avion\n8-Buscar pasajero\n9-Consultar asientos disponibles");
+                "6-Vaciar avion\n7-Consultar avion\n8-Buscar pasajero\n9-Consultar asientos disponibles\n10-Salir");
         System.out.println("Escriba el numero de la opcion que desea:");
         String opcion = br.readLine();
         switch (opcion.toUpperCase()) {
@@ -46,6 +46,8 @@ public class FuncionesMenu {
             case "9":
                 consultarAsientosDisponibles();
                 break;
+            case "10":
+                System.exit(0);
             default:
                 System.out.println("Error");
         }
@@ -175,7 +177,7 @@ public class FuncionesMenu {
         }
         else{
             System.out.println("No existe ese avion");
-            modificarCapacidadDeAsientos();
+            asignarPasajerosAAsientos();
         }
 
     }
@@ -397,16 +399,40 @@ public class FuncionesMenu {
             vaciarAsiento();
         }
     }
+    private StringBuilder agregar_faltantes(String original){
+        int faltante = 20 - original.length();
+        StringBuilder aux = new StringBuilder(original);
+
+        for(int i=0; i<faltante;i++)
+            aux.append(" ");
+
+        return aux;
+    }
     private void imprimirAsientos(Asiento[][] asientos){
-        String info = null;
+        StringBuilder info = new StringBuilder();
         for(Asiento[] fila: asientos){
             for(Asiento i: fila){
-                String nombre = i.getPasajero().getNombre().substring(0, 20);
-                info = i.getIdentificacion() + " " + nombre + "\t";
-            }
-            System.out.println(info + "\n");
+                Pasajero pasajero = i.getPasajero();
+                if(pasajero != null){
+                    if(i.getEstado() == "A"){
+                        String nombre;
+                        try{
+                            nombre = pasajero.getNombre().substring(0, 20);
+                        }
+                        catch (StringIndexOutOfBoundsException e){
+                            nombre = String.valueOf(agregar_faltantes(pasajero.getNombre()));
+                        }
 
+                        info.append(i.getIdentificacion()).append(" ").append(nombre).append("\t");
+                    }else{
+                        info.append(i.getIdentificacion()).append(" ").append("INACTIVO").append("\t");
+                    }
+
+                }
+            }
+            info.append("\n");
         }
+        System.out.println(info);
     }
     public void consultarAvion() throws IOException{
         System.out.println("Escriba la identificacion del avion:");
