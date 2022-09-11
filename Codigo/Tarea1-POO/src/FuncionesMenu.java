@@ -129,7 +129,22 @@ public class FuncionesMenu {
 
                     String identificacion = br.readLine();
                     if(verificaFormatidentificacionAsiento(identificacion)){
+                        int[] posicionAsiento = aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].validaExsteAsiento(Seccion,identificacion);
                         if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].validaExsteAsiento(Seccion,identificacion)[0] != -1){
+                            if(Seccion.toUpperCase().equals("E")){
+                                if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].matrizEconomico[posicionAsiento[0]][posicionAsiento[1]].getEstado() == "I"){
+                                    System.out.println("El asiento esta inactivo");
+                                    break;
+
+                                }
+                            }else{
+                                if(aeropuerto.getEspacios()[aeropuerto.buscaIdentificacionAvion(identificacionAvion)].matrizEjecutivo[posicionAsiento[0]][posicionAsiento[1]].getEstado() == "I"){
+                                    System.out.println("El asiento esta inactivo");
+                                    break;
+
+                                }
+                            }
+
                             System.out.println("Ingrese su Nombre");
                             String nombre = br.readLine();
                             System.out.println("Ingrese su pais de origen");
@@ -140,6 +155,7 @@ public class FuncionesMenu {
                                 int posAvion = aeropuerto.buscaIdentificacionAvion(identificacionAvion);
                                 int columna = aeropuerto.getEspacios()[posAvion].letraNumero( String.valueOf(identificacion.charAt(2)));
                                 int fila =  Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+
 
                                 if(Seccion.toUpperCase().equals("J")){
                                     aeropuerto.getEspacios()[posAvion].matrizEjecutivo[fila][columna].setPasajero(new Pasajero(identificacionPasajero2,nombre,pais));

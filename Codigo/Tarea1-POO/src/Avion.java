@@ -77,20 +77,20 @@ public class Avion {
     public boolean modificaCapacidadAsiento(String seccion,String identificacion){
         int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
         int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
+
         int coordenadas[] = validaExsteAsiento(seccion,identificacion);
 
         if(coordenadas[0] != -1){
             if(seccion.toUpperCase().equals("J")){
-                    System.out.println("El asiento J["+fila+"]["+columna +"] cambio su estado");
+                    //System.out.println("El asiento J["+fila+"]["+columna +"] cambio su estado");
                     matrizEjecutivo[coordenadas[0]][coordenadas[1]].setEstado();
                     return true;
+
                 }
             else{
-                    System.out.println("El asiento E["+fila+"]["+columna +"] cambio su estado");
-                    matrizEconomico[fila][columna].setEstado();
-                    return true;
-
-
+                //System.out.println("El asiento E["+fila+"]["+columna +"] cambio su estado");
+                matrizEconomico[fila][columna].setEstado();
+                return true;
             }
 
         }else{
