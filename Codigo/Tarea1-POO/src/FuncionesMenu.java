@@ -18,6 +18,8 @@ public class FuncionesMenu {
                 "6-Vaciar avion\n7-Consultar avion\n8-Buscar pasajero\n9-Consultar asientos disponibles\n10-Salir");
         System.out.println("Escriba el numero de la opcion que desea:");
         String opcion = br.readLine();
+        opcion = opcion.replace(" ", "");
+        opcion = opcion.replace("\t", "");
         switch (opcion.toUpperCase()) {
             case "1":
                 agregarAvion();
@@ -49,7 +51,8 @@ public class FuncionesMenu {
             case "10":
                 System.exit(0);
             default:
-                System.out.println("Error");
+                System.out.println("Error\n\n");
+                inicio();
         }
     }
 
@@ -449,9 +452,14 @@ public class FuncionesMenu {
                 }
                 info.append("\n");
             }
-            System.out.println(info);
+            if(! info.equals("\n")){
+                System.out.println(info);
+            }else{
+                System.out.println("Todos los asientos estan vacios...\n");
+            }
+
         }else{
-            System.out.println("NO SE ENCUENTRAN ASIENTOS");
+            System.out.println("NO SE ENCUENTRAN ASIENTOS\n");
         }
 
     }
@@ -563,6 +571,7 @@ public class FuncionesMenu {
     }
     public void consultarAsientosDisponibles() throws IOException {
         Avion[] aviones = aeropuerto.getEspacios();
+        int contador = 0;
         for(Avion avion : aviones){
             try{
                 Asiento[][] ejecutivo = avion.get_ejecutivo();
@@ -572,9 +581,11 @@ public class FuncionesMenu {
 
                 if(ejecutivo != null){
                     System.out.println("Cantidad de Asientos Disponibles en EJECUTIVA: " + contarDisponibles(ejecutivo));
+                    contador++;
                 }
                 if(economico != null){
                     System.out.println("Cantidad de Asientos Disponibles en ECONOMICO: " + contarDisponibles(economico));
+                    contador ++;
                 }
                 System.out.println("\n");
             }
@@ -582,6 +593,9 @@ public class FuncionesMenu {
 
             }
 
+        }
+        if(contador == 0){
+            System.out.println("--> No hay aviones en este momento...\n\n");
         }
         inicio();
     }
