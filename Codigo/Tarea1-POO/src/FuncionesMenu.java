@@ -502,12 +502,18 @@ public class FuncionesMenu {
 
                     for(Asiento[] filas : economicos){
                         for(Asiento asiento1 : filas){
-                            if(Objects.equals(asiento1.getPasajero().getIdentificacion(), id_pasajero)){
-                                asiento = asiento1.getIdentificacion();
-                                id_avion = avion.identificacion;
-                                encontrado = true;
-                                break;
+                            try{
+                                if(Objects.equals(asiento1.getPasajero().getIdentificacion(), id_pasajero)){
+                                    asiento = asiento1.getIdentificacion();
+                                    id_avion = avion.identificacion;
+                                    encontrado = true;
+                                    break;
+                                }
                             }
+                            catch (NullPointerException e){
+
+                            }
+
                         }
                     }
                     if(!encontrado){
@@ -548,7 +554,7 @@ public class FuncionesMenu {
 
         for(Asiento[] fila : asientos){
             for(Asiento asiento : fila){
-                if(asiento.getEstado() == "A" || asiento.getPasajero() == null){
+                if(asiento.getEstado() == "A" && asiento.getPasajero() == null){
                     contador++;
                 }
             }
