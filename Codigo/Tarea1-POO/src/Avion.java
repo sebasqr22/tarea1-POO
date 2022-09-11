@@ -57,14 +57,21 @@ public class Avion {
     public int[] validaExsteAsiento(String seccion,String identificacion){
         int columna = letraNumero(String.valueOf(identificacion.charAt(2)));
         int fila = Integer.parseInt( String.valueOf(identificacion.charAt(0)) );
-        if(seccion.toUpperCase() == "J"){
-            if(columna >=  matrizEjecutivo.length/2 && columna >= matrizEconomico[0].length -(matrizEconomico[0].length -matrizEjecutivo[0].length)){
-                columna -= (matrizEconomico[0].length -matrizEjecutivo[0].length);
-            }
-            else{
-                return new int[]{-1, -1};
-            }
+        if(seccion.toUpperCase().equals("J")){
+                //System.out.println(columna >=  matrizEjecutivo.length/2);
+                //System.out.println(matrizEconomico[0].length  -matrizEjecutivo[0].length/2);
+                if(columna >=  matrizEjecutivo.length/2 && columna >= matrizEconomico[0].length  -matrizEjecutivo[0].length/2){
+                    columna -= (matrizEconomico[0].length -matrizEjecutivo[0].length);
+                }
+                else{
+                    if(columna >=  matrizEjecutivo.length/2)
+                        return new int[]{-1, -1};
+                }
+
+
+
         }
+        System.out.println(columna);
 
 
         if(seccion.toUpperCase().equals("J")){
